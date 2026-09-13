@@ -26,7 +26,13 @@ python scripts\day1_smoke.py
 python -m unittest discover -s tests -v
 ```
 
-运行 DeepSeek 真实调用（脚本会隐藏密钥输入）：
+首次使用时，将 DeepSeek API Key 保存到被 Git 忽略的 `.env`：
+
+```powershell
+python scripts\configure_api_key.py
+```
+
+之后运行真实调用无需重复输入：
 
 ```powershell
 python scripts\day1_live.py

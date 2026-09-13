@@ -5,9 +5,12 @@ import os
 import sys
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+load_dotenv(ROOT / ".env")
 
 from tracerag import Document, TraceRAGPipeline  # noqa: E402
 from tracerag.providers import DeepSeekLLMClient  # noqa: E402
