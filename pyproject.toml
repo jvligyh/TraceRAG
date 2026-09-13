@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tracerag"
+version = "0.1.0"
+description = "A traceable and evaluation-first RAG service for technical documents"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "openai>=1.0,<3",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
