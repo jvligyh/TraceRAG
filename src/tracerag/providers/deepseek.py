@@ -15,14 +15,12 @@ class DeepSeekLLMClient:
         api_base: str = "https://api.deepseek.com",
         model: str = "deepseek-flash",
         timeout_seconds: float = 60.0,
-        max_tokens: int = 160,
     ) -> None:
         api_key = api_key.strip()
         if not api_key:
             raise ValueError("DeepSeek API key must not be empty")
 
         self.model = model
-        self._max_tokens = max_tokens
         self._client = OpenAI(
             api_key=api_key,
             base_url=api_base.rstrip("/"),
@@ -43,7 +41,6 @@ class DeepSeekLLMClient:
                 ],
                 stream=False,
                 reasoning_effort="high",
-                max_tokens=self._max_tokens,
                 extra_body={"thinking": {"type": "enabled"}},
             )
         except APIError as exc:
