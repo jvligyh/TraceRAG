@@ -6,7 +6,7 @@ __pycache__/
 .env.local
 dist/
 build/
+*.egg-info/
 data/index/
 data/uploads/
 results/
-
