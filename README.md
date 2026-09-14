@@ -4,7 +4,7 @@ TraceRAG 是一个面向技术文档的「可追溯、评测优先」RAG 与工�
 
 ## 当前状态
 
-Day 1 工程准备已完成，目前已有：
+Day 1 工程准备已完成；Day 2 已实现 Markdown/PDF 接入与稳定 chunk id。目前已有：
 
 - 与模型供应商解耦的 `LLMClient` 接口；
 - 确定性 Mock 模型客户端；
@@ -14,6 +14,8 @@ Day 1 工程准备已完成，目前已有：
 - 第一版架构图和 15 天交付计划；
 - 本地 `.venv`，TraceRAG 已以可编辑模式安装。
 - 通过 OpenAI-compatible SDK 成功调用 DeepSeek 真实模型。
+- Markdown 和按页 PDF 文本提取；
+- 保留 source、page number 和字符区间的确定性切块。
 
 Mock 路径不需要 API Key；DeepSeek 路径仅在运行时读取密钥。仓库不保存真实凭据。
 
@@ -24,6 +26,13 @@ cd "D:\Desktop\实习\TraceRAG"
 .\.venv\Scripts\Activate.ps1
 python scripts\day1_smoke.py
 python -m unittest discover -s tests -v
+```
+
+Day 2 文档接入：
+
+```powershell
+python scripts\day2_ingest.py data\demo\rag_evaluation.md --max-chars 120 --overlap-chars 20
+python scripts\day2_ingest.py "D:\path\to\paper.pdf"
 ```
 
 首次使用时，将 DeepSeek API Key 保存到被 Git 忽略的 `.env`：

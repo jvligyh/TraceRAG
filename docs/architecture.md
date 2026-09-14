@@ -47,6 +47,8 @@ flowchart LR
 
 Day 1 只有「构造 Grounded Prompt → Mock」可执行。架构图表示目标形态，不代表每个模块已实现。
 
+Day 2 已将「Markdown/PDF 解析 → 归一化 → 稳定 chunk id」变为可执行链路；BM25 和稠密索引仍属于后续任务。
+
 ## Day 1 决策
 
 - LLM 接口与检索、API 框架分离。

@@ -1,6 +1,6 @@
 # 接口定义
 
-TraceRAG 将业务编排与模型供应商、检索算法分离。以下签名是项目合约；Day 1 只实现了 LLM 边界，其余为计划接口。
+TraceRAG 将业务编排与模型供应商、文档格式和检索算法分离。LLM 与文档解析边界已实现，检索与评测仍是计划接口。
 
 ## 已实现：模型客户端
 
@@ -10,15 +10,21 @@ class LLMClient(Protocol):
         ...
 ```
 
-输入是已构造好的 Prompt，输出是模型文本。Mock 客户端无需网络即可满足此合约；未来 MaaS 客户端也必须提供相同方法。
+输入是已构造好的 Prompt，输出是模型文本。`MockLLMClient` 与 `DeepSeekLLMClient` 都已满足该合约。
+
+## 已实现：文档解析器
+
+```python
+class DocumentParser(Protocol):
+    def parse(self, path: Path) -> tuple[Document, ...]:
+        ...
+```
+
+`MarkdownParser` 与 `PDFParser` 都满足该接口。
 
 ## 计划接口
 
 ```python
-class DocumentParser(Protocol):
-    def parse(self, path: Path) -> Sequence[Document]:
-        ...
-
 class Retriever(Protocol):
     def retrieve(self, query: str, top_k: int) -> Sequence[RetrievedChunk]:
         ...
