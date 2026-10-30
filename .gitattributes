@@ -1,0 +1,3 @@
+# Corpus hashes and document IDs depend on the exact downloaded bytes.
+# Keep CRLF/LF as recorded in the manifest on every checkout platform.
+data/corpus/*.md -text
