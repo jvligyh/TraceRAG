@@ -15,6 +15,7 @@ class DeepSeekLLMClient:
         api_base: str = "https://api.deepseek.com",
         model: str = "deepseek-flash",
         timeout_seconds: float = 60.0,
+        max_retries: int = 2,
     ) -> None:
         api_key = api_key.strip()
         if not api_key:
@@ -25,6 +26,7 @@ class DeepSeekLLMClient:
             api_key=api_key,
             base_url=api_base.rstrip("/"),
             timeout=timeout_seconds,
+            max_retries=max_retries,
         )
 
     def complete(self, prompt: str) -> str:
@@ -40,11 +42,10 @@ class DeepSeekLLMClient:
                     {"role": "user", "content": prompt},
                 ],
                 stream=False,
-                reasoning_effort="high",
-                extra_body={"thinking": {"type": "enabled"}},
+                extra_body={"thinking": {"type": "disabled"}},
             )
         except APIError as exc:
-            raise RuntimeError(f"DeepSeek API request failed: {exc}") from exc
+            raise RuntimeError("DeepSeek API request failed; check connectivity, model and account") from exc
 
         return extract_chat_content(response)
 
@@ -60,15 +61,8 @@ def extract_chat_content(response: Any) -> str:
     if message is None:
         raise RuntimeError("DeepSeek response does not contain a message")
 
-    for key in ("content", "reasoning_content"):
-        value = getattr(message, key, None)
-        if isinstance(value, str) and value.strip():
-            return value.strip()
-
-    model_extra = getattr(message, "model_extra", None)
-    if isinstance(model_extra, dict):
-        value = model_extra.get("reasoning_content")
-        if isinstance(value, str) and value.strip():
-            return value.strip()
+    value = getattr(message, "content", None)
+    if isinstance(value, str) and value.strip():
+        return value.strip()
 
     raise RuntimeError("DeepSeek response message does not contain text")

@@ -5,8 +5,18 @@ import hashlib
 from .schemas import Chunk, Document
 
 
+_SEPARATOR_GROUPS = (
+    ("\n\n",),
+    ("\n",),
+    ("。", "！", "？", ". ", "! ", "? "),
+    ("；", "; "),
+    ("，", ", "),
+    (" ",),
+)
+
+
 class TextChunker:
-    """优先在段落或空白处切分的确定性文本切块器。"""
+    """优先在段落、句末标点或空白处切分的确定性文本切块器。"""
 
     def __init__(self, max_chars: int = 800, overlap_chars: int = 120) -> None:
         if max_chars < 1:
@@ -44,12 +54,15 @@ class TextChunker:
                         end_char=content_end,
                         source=document.source,
                         page_number=document.page_number,
+                        extraction_method=document.extraction_method,
+                        ocr_confidence=document.ocr_confidence,
                     )
                 )
 
             if end >= len(text):
                 break
-            start = max(end - self.overlap_chars, start + 1)
+            next_start = max(end - self.overlap_chars, start + 1)
+            start = self._align_start(text, next_start, previous_start=start)
 
         return tuple(chunks)
 
@@ -59,11 +72,28 @@ class TextChunker:
             return len(text)
 
         preferred_start = start + self.max_chars // 2
-        for separator in ("\n\n", "\n", ". ", " "):
-            boundary = text.rfind(separator, preferred_start, hard_end)
-            if boundary != -1:
-                return boundary + len(separator)
+        for separators in _SEPARATOR_GROUPS:
+            best_end = -1
+            for separator in separators:
+                boundary = text.rfind(separator, preferred_start, hard_end)
+                if boundary != -1:
+                    best_end = max(best_end, boundary + len(separator))
+            if best_end != -1:
+                return best_end
         return hard_end
+
+    def _align_start(self, text: str, target: int, previous_start: int) -> int:
+        if self.overlap_chars == 0:
+            return target
+
+        search_start = max(previous_start + 1, target - self.overlap_chars)
+        best_start = -1
+        for separators in _SEPARATOR_GROUPS:
+            for separator in separators:
+                boundary = text.rfind(separator, search_start, target)
+                if boundary != -1:
+                    best_start = max(best_start, boundary + len(separator))
+        return best_start if best_start != -1 else target
 
     @staticmethod
     def _chunk_id(document_id: str, start: int, end: int, text: str) -> str:

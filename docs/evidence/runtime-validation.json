@@ -1,0 +1,101 @@
+{
+  "live": true,
+  "first_query": {
+    "question": "为什么要分别评估检索和生成？",
+    "answer": "因为检索指标能揭示必要证据是否到达模型，而答案指标能揭示模型是否正确使用了这些证据。若不分别评估，正确的答案可能掩盖检索失败，错误的答案也可能被归咎于错误的组件。",
+    "status": "answered",
+    "citations": [
+      {
+        "chunk_id": "chunk-76aa185488d541c559a0",
+        "document_id": "md-72ac6cc6cc94402a",
+        "text": "# RAG evaluation\n\nA retrieval-augmented generation system should evaluate retrieval and generation separately. Retrieval metrics reveal whether the necessary evidence reached the model. Answer metrics reveal whether the model used that evidence correctly. Without this separation, a correct answer may hide failed retrieval and an incorrect answer may be blamed on the wrong component.",
+        "start_char": 0,
+        "end_char": 385,
+        "source": "rag_evaluation.md",
+        "page_number": null,
+        "score": 0.03278688524590164,
+        "rank": 1
+      }
+    ],
+    "results": [
+      {
+        "chunk_id": "chunk-76aa185488d541c559a0",
+        "document_id": "md-72ac6cc6cc94402a",
+        "text": "# RAG evaluation\n\nA retrieval-augmented generation system should evaluate retrieval and generation separately. Retrieval metrics reveal whether the necessary evidence reached the model. Answer metrics reveal whether the model used that evidence correctly. Without this separation, a correct answer may hide failed retrieval and an incorrect answer may be blamed on the wrong component.",
+        "start_char": 0,
+        "end_char": 385,
+        "source": "rag_evaluation.md",
+        "page_number": null,
+        "score": 0.03278688524590164,
+        "rank": 1
+      }
+    ],
+    "timings": {
+      "index_seconds": 27.542290899902582,
+      "retrieval_seconds": 1.2991834999993443,
+      "rerank_seconds": 3.00002284348011e-06,
+      "generation_seconds": 1.8720222001429647,
+      "total_seconds": 30.713532300200313
+    },
+    "provider": "deepseek",
+    "answer_language": "Chinese"
+  },
+  "warm_search": {
+    "question": "为什么要分别评估检索和生成？",
+    "answer": "",
+    "status": "search_only",
+    "citations": [],
+    "results": [
+      {
+        "chunk_id": "chunk-76aa185488d541c559a0",
+        "document_id": "md-72ac6cc6cc94402a",
+        "text": "# RAG evaluation\n\nA retrieval-augmented generation system should evaluate retrieval and generation separately. Retrieval metrics reveal whether the necessary evidence reached the model. Answer metrics reveal whether the model used that evidence correctly. Without this separation, a correct answer may hide failed retrieval and an incorrect answer may be blamed on the wrong component.",
+        "start_char": 0,
+        "end_char": 385,
+        "source": "rag_evaluation.md",
+        "page_number": null,
+        "score": 0.03278688524590164,
+        "rank": 1
+      }
+    ],
+    "timings": {
+      "index_seconds": 0.0,
+      "retrieval_seconds": 0.004055700032040477,
+      "rerank_seconds": 2.8999056667089462e-06,
+      "generation_seconds": 1.0011717677116394e-07,
+      "total_seconds": 0.006419599987566471
+    },
+    "provider": "deepseek",
+    "answer_language": "Chinese"
+  },
+  "cache_note": "Warm query reuses model, index and translation cache; generation disabled.",
+  "agent": {
+    "answer": "必须分别评估检索和生成，因为检索指标能揭示必要证据是否到达模型，而答案指标反映模型是否正确使用了这些证据。若不分开评估，一个正确答案可能掩盖检索失败，一个错误答案也可能被归咎于错误的组件。",
+    "citations": [
+      {
+        "chunk_id": "chunk-76aa185488d541c559a0",
+        "document_id": "md-72ac6cc6cc94402a",
+        "source": "rag_evaluation.md",
+        "page_number": null,
+        "text": "# RAG evaluation\n\nA retrieval-augmented generation system should evaluate retrieval and generation separately. Retrieval metrics reveal whether the necessary evidence reached the model. Answer metrics reveal whether the model used that evidence correctly. Without this separation, a correct answer may hide failed retrieval and an incorrect answer may be blamed on the wrong component."
+      }
+    ],
+    "status": "answered",
+    "steps": 2,
+    "trace": [
+      {
+        "step": 1,
+        "event": "tool",
+        "tool": "search",
+        "arguments": {
+          "query": "分别评估检索和生成 原因",
+          "top_k": 5
+        }
+      },
+      {
+        "step": 2,
+        "event": "final"
+      }
+    ]
+  }
+}

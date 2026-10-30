@@ -1,0 +1,68 @@
+{
+  "torch": "2.14.0+cu130",
+  "cuda": "13.0",
+  "repeats": 5,
+  "kind": "smoke-and-latency-not-quality-benchmark",
+  "results": [
+    {
+      "kind": "embedding",
+      "model": "Qwen/Qwen3-Embedding-0.6B",
+      "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+      "device": "cuda",
+      "query_instruction": "Given a search query, retrieve relevant passages that answer the query",
+      "query_template": "Instruct: {instruction}\\nQuery:{query}",
+      "pooling": "last-nonpadding-token; left-padding",
+      "normalized": true,
+      "max_length": 1024,
+      "official_model_card": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B",
+      "scores": [
+        0.14560109722398412,
+        0.7544101957006927
+      ],
+      "cold_seconds": 6.744478499982506,
+      "warm_seconds": [
+        0.047380900010466576,
+        0.04748789989389479,
+        0.04733620001934469,
+        0.04648120002821088,
+        0.03955410001799464
+      ],
+      "p50_seconds": 0.04733620001934469,
+      "p95_seconds": 0.04748789989389479,
+      "peak_cuda_allocated_mb": 1147.8759765625
+    },
+    {
+      "kind": "reranker",
+      "model": "BAAI/bge-reranker-v2-m3",
+      "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "device": "cuda",
+      "query_instruction": null,
+      "query_template": null,
+      "pooling": "classification-logit",
+      "normalized": false,
+      "max_length": 512,
+      "official_model_card": "https://huggingface.co/BAAI/bge-reranker-v2-m3",
+      "scores": [
+        [
+          "1",
+          0.72216796875
+        ],
+        [
+          "0",
+          -11.0234375
+        ]
+      ],
+      "cold_seconds": 4.080583299975842,
+      "warm_seconds": [
+        0.018465899862349033,
+        0.017825999995693564,
+        0.017923499923199415,
+        0.01981070009060204,
+        0.02094949991442263
+      ],
+      "p50_seconds": 0.018465899862349033,
+      "p95_seconds": 0.02094949991442263,
+      "peak_cuda_allocated_mb": 1092.28076171875
+    }
+  ]
+}

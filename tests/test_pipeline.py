@@ -12,6 +12,15 @@ from tracerag import Document, TraceRAGPipeline  # noqa: E402
 from tracerag.providers import MockLLMClient  # noqa: E402
 
 
+class RecordingClient:
+    def __init__(self) -> None:
+        self.prompt = ""
+
+    def complete(self, prompt: str) -> str:
+        self.prompt = prompt
+        return "中文回答"
+
+
 class TraceRAGPipelineTests(unittest.TestCase):
     def setUp(self) -> None:
         self.pipeline = TraceRAGPipeline(MockLLMClient())
@@ -38,6 +47,23 @@ class TraceRAGPipelineTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.pipeline.answer("A valid question", [])
 
+    def test_answer_language_is_independent_from_question_language(self) -> None:
+        client = RecordingClient()
+        pipeline = TraceRAGPipeline(client)
+
+        response = pipeline.answer(
+            "Why evaluate retrieval separately?",
+            self.documents,
+            answer_language="Chinese",
+        )
+
+        self.assertEqual("中文回答", response.answer)
+        self.assertIn("Write the final answer in Chinese.", client.prompt)
+
+    def test_empty_answer_language_is_rejected(self) -> None:
+        with self.assertRaises(ValueError):
+            self.pipeline.answer("A valid question", self.documents, answer_language="   ")
+
     def test_mock_client_rejects_empty_prompt(self) -> None:
         client = MockLLMClient()
         with self.assertRaises(ValueError):
@@ -45,4 +71,3 @@ class TraceRAGPipelineTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

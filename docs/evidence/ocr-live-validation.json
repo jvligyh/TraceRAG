@@ -1,0 +1,201 @@
+{
+  "fixture_kind": "deterministic synthetic printed lab records, not a handwriting/scene benchmark",
+  "cases": [
+    {
+      "filename": "OCR中英实验记录.png",
+      "upload": {
+        "document_id": "file-1a663b7d0d9845d33cee121d",
+        "filename": "OCR中英实验记录.png",
+        "bytes": 72882,
+        "created_at": "2026-10-29 12:22:22",
+        "pages": 1,
+        "chunks": 1,
+        "original_available": true,
+        "duplicate": false,
+        "ocr_used": true,
+        "ocr_pages": 1,
+        "extraction_methods": [
+          "ocr"
+        ],
+        "warnings": [
+          "OCR识别可能漏字或误认数字/公式，回答前请打开原图或原PDF核对。"
+        ]
+      },
+      "ocr_upload_seconds": 2.103731300216168,
+      "response": {
+        "question": "这张实验记录中的光电转换效率是多少？",
+        "answer": "23.5%",
+        "status": "answered",
+        "citations": [
+          {
+            "chunk_id": "chunk-59cc120e0e720c2a5f12",
+            "document_id": "img-dabd5b668311c1d3-ocr",
+            "text": "TraceRAG OCR 实验记录\n实验编号:TR-2026-108\n样品:钙钛矿太阳能电池\n测试温度:25C\n光电转换效率:23.5%\nConclusion: Evidence must be traceable.",
+            "start_char": 0,
+            "end_char": 108,
+            "source": "OCR中英实验记录.png",
+            "page_number": null,
+            "extraction_method": "ocr",
+            "ocr_confidence": 0.9974333333333334,
+            "asset_id": "file-1a663b7d0d9845d33cee121d",
+            "original_available": true,
+            "source_url": "/documents/file-1a663b7d0d9845d33cee121d/file",
+            "score": 0.03278688524590164,
+            "rank": 1
+          }
+        ],
+        "results": [
+          {
+            "chunk_id": "chunk-59cc120e0e720c2a5f12",
+            "document_id": "img-dabd5b668311c1d3-ocr",
+            "text": "TraceRAG OCR 实验记录\n实验编号:TR-2026-108\n样品:钙钛矿太阳能电池\n测试温度:25C\n光电转换效率:23.5%\nConclusion: Evidence must be traceable.",
+            "start_char": 0,
+            "end_char": 108,
+            "source": "OCR中英实验记录.png",
+            "page_number": null,
+            "extraction_method": "ocr",
+            "ocr_confidence": 0.9974333333333334,
+            "asset_id": "file-1a663b7d0d9845d33cee121d",
+            "original_available": true,
+            "source_url": "/documents/file-1a663b7d0d9845d33cee121d/file",
+            "score": 0.03278688524590164,
+            "rank": 1
+          }
+        ],
+        "timings": {
+          "index_seconds": 8.89319230010733,
+          "retrieval_seconds": 1.2832205998711288,
+          "rerank_seconds": 3.899913281202316e-06,
+          "rewrite_seconds": 1.800013706088066e-06,
+          "generation_seconds": 1.904142300132662,
+          "total_seconds": 12.081689100014046
+        },
+        "provider": "deepseek",
+        "answer_language": "Chinese",
+        "retrieval_query": "这张实验记录中的光电转换效率是多少？",
+        "history_used": false,
+        "document_ids": [
+          "file-1a663b7d0d9845d33cee121d"
+        ]
+      },
+      "original_bytes_match": true
+    },
+    {
+      "filename": "OCR扫描实验记录.pdf",
+      "upload": {
+        "document_id": "file-ddce7c3976f9316acd54fe02",
+        "filename": "OCR扫描实验记录.pdf",
+        "bytes": 151918,
+        "created_at": "2026-10-29 12:22:37",
+        "pages": 2,
+        "chunks": 2,
+        "original_available": true,
+        "duplicate": false,
+        "ocr_used": true,
+        "ocr_pages": 2,
+        "extraction_methods": [
+          "ocr"
+        ],
+        "warnings": [
+          "第2页OCR未识别到可用文字；该页未建立检索索引。",
+          "OCR识别可能漏字或误认数字/公式，回答前请打开原图或原PDF核对。"
+        ]
+      },
+      "ocr_upload_seconds": 2.171249100007117,
+      "response": {
+        "question": "这份扫描记录中的催化剂温度是多少？",
+        "answer": "催化剂温度为42 C。",
+        "status": "answered",
+        "citations": [
+          {
+            "chunk_id": "chunk-d475b97c87f9876155d4",
+            "document_id": "pdf-c5faedcee9e29cb5-p0003-ocr",
+            "text": "Laboratory Scan - Page Two\nBatch identifier: ZEBRA-482\nThe catalyst temperature is 42 C.\nThe measured pressure is 3.6 kPa.\nOCR transcription needs source verification.",
+            "start_char": 0,
+            "end_char": 167,
+            "source": "OCR扫描实验记录.pdf",
+            "page_number": 3,
+            "extraction_method": "ocr",
+            "ocr_confidence": 0.9963979999999999,
+            "asset_id": "file-ddce7c3976f9316acd54fe02",
+            "original_available": true,
+            "source_url": "/documents/file-ddce7c3976f9316acd54fe02/file#page=3",
+            "score": 0.03252247488101534,
+            "rank": 2
+          }
+        ],
+        "results": [
+          {
+            "chunk_id": "chunk-8b03fbe3dde49f7a263a",
+            "document_id": "pdf-c5faedcee9e29cb5-p0001-ocr",
+            "text": "TraceRAG OCR 实验记录\n实验编号:TR-2026-108\n样品:钙钛矿太阳能电池\n测试温度:25C\n光电转换效率:23.5%\nConclusion: Evidence must be traceable.",
+            "start_char": 0,
+            "end_char": 108,
+            "source": "OCR扫描实验记录.pdf",
+            "page_number": 1,
+            "extraction_method": "ocr",
+            "ocr_confidence": 0.9954883333333333,
+            "asset_id": "file-ddce7c3976f9316acd54fe02",
+            "original_available": true,
+            "source_url": "/documents/file-ddce7c3976f9316acd54fe02/file#page=1",
+            "score": 0.03252247488101534,
+            "rank": 1
+          },
+          {
+            "chunk_id": "chunk-d475b97c87f9876155d4",
+            "document_id": "pdf-c5faedcee9e29cb5-p0003-ocr",
+            "text": "Laboratory Scan - Page Two\nBatch identifier: ZEBRA-482\nThe catalyst temperature is 42 C.\nThe measured pressure is 3.6 kPa.\nOCR transcription needs source verification.",
+            "start_char": 0,
+            "end_char": 167,
+            "source": "OCR扫描实验记录.pdf",
+            "page_number": 3,
+            "extraction_method": "ocr",
+            "ocr_confidence": 0.9963979999999999,
+            "asset_id": "file-ddce7c3976f9316acd54fe02",
+            "original_available": true,
+            "source_url": "/documents/file-ddce7c3976f9316acd54fe02/file#page=3",
+            "score": 0.03252247488101534,
+            "rank": 2
+          }
+        ],
+        "timings": {
+          "index_seconds": 0.018211100017651916,
+          "retrieval_seconds": 0.5612643000204116,
+          "rerank_seconds": 3.8000289350748062e-06,
+          "rewrite_seconds": 1.600012183189392e-06,
+          "generation_seconds": 0.766306099947542,
+          "total_seconds": 1.3470540000125766
+        },
+        "provider": "deepseek",
+        "answer_language": "Chinese",
+        "retrieval_query": "这份扫描记录中的催化剂温度是多少？",
+        "history_used": false,
+        "document_ids": [
+          "file-ddce7c3976f9316acd54fe02"
+        ]
+      },
+      "original_bytes_match": true
+    }
+  ],
+  "health": {
+    "status": "ok",
+    "version": "0.4.0",
+    "features": [
+      "document_scope",
+      "original_files",
+      "conversation_history",
+      "ocr"
+    ],
+    "documents": 32,
+    "chunks": 234,
+    "provider": "deepseek",
+    "retrieval": "hybrid",
+    "translator": "qwen",
+    "embedding": "minilm",
+    "reranker": "none",
+    "models_loaded": true,
+    "ocr_enabled": true,
+    "ocr_loaded": true,
+    "ocr_max_pages": 30
+  }
+}

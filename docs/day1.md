@@ -16,11 +16,11 @@
 
 ## 你今天的亲手任务
 
-- [ ] 不看 AI 解释 `src/tracerag/pipeline.py` 的每一行。
+- [x] 不看 AI 解释 `src/tracerag/pipeline.py` 的每一行。
 - [ ] 凭记忆画一次 Day 15 架构图。
-- [ ] 亲手运行冒烟脚本和全部测试。
+- [x] 亲手运行冒烟脚本和全部测试。
 - [x] 亲手新增一项 Mock 空 Prompt 测试并验证通过。
-- [ ] 亲手修改 Mock 回答文字。
+- [x] 亲手修改 Mock 回答文字。
 - [ ] 使用 C++ 重做5道已练过的 LeetCode Hot 100。
 - [ ] 完成本页下方复盘。
 

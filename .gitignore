@@ -10,3 +10,6 @@ build/
 data/index/
 data/uploads/
 results/
+data/runtime/
+data/models/
+*.log

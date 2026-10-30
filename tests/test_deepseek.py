@@ -27,6 +27,12 @@ class DeepSeekLLMClientTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             DeepSeekLLMClient("   ")
 
+    def test_reasoning_is_not_exposed_as_final_answer(self) -> None:
+        response=SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(
+            content=None,reasoning_content="internal reasoning"))])
+        with self.assertRaises(RuntimeError):
+            extract_chat_content(response)
+
 
 if __name__ == "__main__":
     unittest.main()

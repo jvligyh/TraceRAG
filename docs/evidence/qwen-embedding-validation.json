@@ -1,0 +1,35 @@
+{
+  "torch": "2.14.0+cu130",
+  "cuda": "13.0",
+  "repeats": 5,
+  "kind": "smoke-and-latency-not-quality-benchmark",
+  "results": [
+    {
+      "kind": "embedding",
+      "model": "Qwen/Qwen3-Embedding-0.6B",
+      "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+      "device": "cuda",
+      "query_instruction": "Given a search query, retrieve relevant passages that answer the query",
+      "query_template": "Instruct: {instruction}\\nQuery:{query}",
+      "pooling": "last-nonpadding-token; left-padding",
+      "normalized": true,
+      "max_length": 1024,
+      "official_model_card": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B",
+      "scores": [
+        0.14560109722398412,
+        0.7544101957006927
+      ],
+      "cold_seconds": 6.106996900169179,
+      "warm_seconds": [
+        0.049325000029057264,
+        0.04656750010326505,
+        0.04502180009149015,
+        0.047247299924492836,
+        0.045212999917566776
+      ],
+      "p50_seconds": 0.04656750010326505,
+      "p95_seconds": 0.049325000029057264,
+      "peak_cuda_allocated_mb": 1147.8759765625
+    }
+  ]
+}

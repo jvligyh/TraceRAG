@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TraceRAG · 我的文档问答</title>
+<style>
+:root{color-scheme:light dark;--bg:light-dark(#f5f7fb,#10151c);--panel:light-dark(#fff,#19222c);--text:light-dark(#172439,#e8edf4);--muted:light-dark(#596a80,#a7b5c8);--line:light-dark(#dce3eb,#344253);--brand:light-dark(#245cba,#8cb6ff)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1200px;margin:auto;padding:30px 22px}header{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:22px}h1{font-size:26px;margin:0}h2{font-size:18px;margin:0 0 12px}p{margin:8px 0}.muted,small{color:var(--muted)}.layout{display:grid;grid-template-columns:310px minmax(0,1fr);gap:22px}.panel{align-self:start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px}label{display:block;margin:12px 0 5px}textarea,input,select,button{font:inherit}textarea,input[type=file],select{width:100%;border:1px solid var(--line);border-radius:7px;padding:9px;background:var(--bg);color:var(--text)}textarea{resize:vertical;min-height:110px}button{border:1px solid var(--line);border-radius:7px;padding:8px 14px;background:var(--panel);color:var(--text);cursor:pointer}button.primary{background:var(--brand);color:light-dark(white,#10213e);border-color:var(--brand)}button:disabled{opacity:.55;cursor:wait}button:focus-visible,a:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--brand);outline-offset:2px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row>*{flex:1;min-width:0}.controls{margin:14px 0}.doc{border-top:1px solid var(--line);padding:12px 0;overflow-wrap:anywhere}.doc label,.scope-label{display:flex;gap:8px;align-items:flex-start;margin:0}.doc input,.scope-label input{margin-top:6px;flex:none}.doc button{padding:2px 8px;font-size:13px}.doc-actions{display:flex;gap:12px;margin:7px 0 0 24px;align-items:center}.answer,.question-text{white-space:pre-wrap;overflow-wrap:anywhere}.citation{margin-top:12px;padding:14px;border-left:3px solid var(--brand);background:var(--bg);overflow-wrap:anywhere}.citation pre{font:inherit;white-space:pre-wrap;margin:8px 0 0}.citation a,a{color:var(--brand)}.error{color:light-dark(#a11e23,#ff9b9b)}#status,#meta,#scope-status,.turn-meta{font-size:13px}#message{min-height:26px}details{margin-top:12px}summary{cursor:pointer}#documents{max-height:530px;overflow-y:auto;padding-right:5px}.turn{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:20px}.question-text{font-weight:600;margin-bottom:10px}.history-citations{margin-top:8px}.toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center}.notice{padding:10px;background:var(--bg);border-radius:6px}.turn-meta{color:var(--muted);margin-bottom:8px}.current-question{margin-top:18px}#raw{white-space:pre-wrap;overflow-wrap:anywhere}@media(max-width:760px){main{padding:20px 14px}.layout{grid-template-columns:1fr}.layout>section{grid-row:1}header{display:block}.panel{padding:18px}#documents{max-height:270px}}
+</style>
+</head>
+<body><main>
+<header><div><h1>TraceRAG</h1><p class="muted">选择自己的资料，连续提问，打开原文核对</p></div><div id="status" role="status">正在连接本地服务…</div></header>
+<div class="layout">
+<aside class="panel"><h2>文档库</h2><p class="muted">支持文字/扫描 PDF、PNG/JPEG/WebP/BMP/TIFF 图片，以及 Markdown、TXT、HTML。单文件最多 10 MB，原文件保存在本机。</p>
+<p id="ocr-notice" class="muted">扫描页和图片自动用本地 OCR 识别文字，首次识别稍慢；扫描页默认最多 30 页。暂不解读图表含义或识别物体。</p>
+<form id="upload-form"><label for="file">添加文档或图片（可多选）</label><input id="file" type="file" accept=".pdf,.md,.markdown,.txt,.html,.htm,.png,.jpg,.jpeg,.webp,.bmp,.tif,.tiff" multiple required><button id="upload" type="submit" style="margin-top:10px">上传并识别</button></form>
+<p id="upload-status" role="status"></p>
+<label class="scope-label"><input type="checkbox" id="all-documents" checked><span>查询全部文档</span></label>
+<p id="scope-status" class="muted">正在读取文档…</p><div id="documents"></div>
+</aside>
+<section class="panel"><div class="toolbar"><h2>文档对话</h2><button id="new-chat" type="button">新对话</button></div>
+<p class="muted">更换文档范围会开启新对话。聊天记录保存在此浏览器本机。</p><p id="provider-notice" class="notice" hidden></p>
+<div id="history" aria-label="历史对话"></div>
+<div id="latest-turn" hidden><div id="current-question" class="question-text"></div><div id="meta" class="muted"></div><div id="answer" class="answer"></div><div id="citations"></div><details id="raw-detail" hidden><summary>查看完整返回数据</summary><pre id="raw"></pre></details></div>
+<form id="query-form" class="current-question"><label for="question">输入问题或继续追问</label><textarea id="question" placeholder="例如：这篇论文提出了什么方法？之后可以追问：它有什么限制？" required maxlength="4000"></textarea>
+<div class="row controls"><div><label for="mode">模式</label><select id="mode"><option value="answer">检索并回答</option><option value="search">只检索证据</option><option value="agent">工具调用问答</option></select></div><div><label for="language">回答语言</label><select id="language"><option value="Chinese">中文</option><option value="English">English</option></select></div><div><label for="top-k">证据数量</label><select id="top-k"><option>3</option><option selected>5</option><option>10</option></select></div></div>
+<button id="ask" class="primary" type="submit">开始查询</button></form>
+<p id="message" role="status" aria-live="polite"></p>
+</section></div></main>
+<script>
+'use strict';
+const el=id=>document.getElementById(id);
+const storageKey='tracerag-daily-v1';
+let documents=[],allDocuments=true,selected=new Set(),turns=[],busy=false;
+try{const saved=JSON.parse(localStorage.getItem(storageKey)||'null');if(saved){allDocuments=saved.allDocuments!==false;selected=new Set(Array.isArray(saved.selected)?saved.selected.filter(x=>typeof x==='string'):[]);turns=Array.isArray(saved.turns)?saved.turns.filter(x=>typeof x.question==='string'&&x.data&&typeof x.data==='object').slice(-20):[]}}catch{}
+async function api(path,options={}){let response;try{response=await fetch(path,options)}catch{throw new Error('无法连接本地服务，请检查启动窗口是否仍在运行。')}let data;try{data=await response.json()}catch{throw new Error('服务未返回有效数据')}if(!response.ok){const detail=typeof data.detail==='string'?data.detail:'请求参数无效';throw new Error(`${detail}（HTTP ${response.status}）`)}return data}
+function text(tag,value,className){const node=document.createElement(tag);node.textContent=value;if(className)node.className=className;return node}
+function save(){try{localStorage.setItem(storageKey,JSON.stringify({allDocuments,selected:[...selected],turns:turns.slice(-20)}))}catch{el('message').textContent='浏览器存储空间不足，当前对话仍可使用，但刷新后可能无法恢复。'}}
+function safeSourceLink(value){return typeof value==='string'&&/^\/documents\/[A-Za-z0-9_-]+\/file(?:#page=\d+)?$/.test(value)?value:null}
+function originalLink(value,label='打开原文'){const href=safeSourceLink(value);if(!href)return null;const link=text('a',label);link.href=href;link.target='_blank';link.rel='noopener';return link}
+function sourcesFor(data){return data.citations?.length?data.citations:(data.results||data.sources||[])}
+function renderCitations(container,data){
+  container.replaceChildren();
+  for(const source of sourcesFor(data)){
+    const node=text('div','','citation');
+    if(typeof source==='string')node.append(text('strong',source));
+    else{
+      const chunk=source.chunk||source;
+      node.append(text('strong',`[${chunk.chunk_id||source.document_id||'证据'}]`),text('div',`${source.source||chunk.source||''}${(source.page_number||chunk.page_number)?' · 第 '+(source.page_number||chunk.page_number)+' 页':''}`,'muted'));
+      if((source.extraction_method||chunk.extraction_method)==='ocr'){
+        const confidence=source.ocr_confidence??chunk.ocr_confidence;
+        const score=Number.isFinite(confidence)?`；平均识别置信度 ${Number(confidence).toFixed(2)}，不等于正确率`:'';
+        node.append(text('div',`OCR识别文本，请核对原图${score}`,'muted'));
+      }
+      const link=originalLink(source.source_url||chunk.source_url);
+      if(link)node.append(link);
+      else if(source.original_available===false)node.append(text('small','旧版文档未保存原文件，重新上传后可打开原文。'));
+      node.append(text('pre',source.quote||source.text||chunk.text||''));
+    }
+    container.append(node);
+  }
+}
+function statusLabel(status){return({answered:'有引用的模型回答',extractive:'原文摘录（未调用生成模型）',search_only:'检索证据',insufficient_evidence:'资料不足，已拒答',step_limit:'工具调用达到步数上限',model_error:'模型调用失败',invalid_citations:'引用校验未通过'})[status]||status||'查询完成'}
+function renderTurns(){el('history').replaceChildren();for(const turn of turns.slice(0,-1)){const box=text('article','','turn');box.append(text('div',turn.question,'question-text'),text('div',statusLabel(turn.data.status),'turn-meta'),text('div',turn.data.answer||'已返回检索证据。','answer'));const details=document.createElement('details');details.className='history-citations';details.append(text('summary',`查看 ${sourcesFor(turn.data).length} 条证据`));const list=document.createElement('div');renderCitations(list,turn.data);details.append(list);box.append(details);el('history').append(box)}const turn=turns.at(-1);el('latest-turn').hidden=!turn;if(!turn){el('answer').textContent='';el('citations').replaceChildren();return}el('current-question').textContent=turn.question;el('answer').textContent=turn.data.answer||'已返回检索证据。';const rewrite=turn.data.retrieval_query&&turn.data.retrieval_query!==turn.question?` · 检索问题：${turn.data.retrieval_query}`:'';el('meta').textContent=`${statusLabel(turn.data.status)} · ${Number(turn.seconds||turn.data.timings?.total_seconds||0).toFixed(2)} 秒${rewrite}`;renderCitations(el('citations'),turn.data);el('raw').textContent=JSON.stringify(turn.data,null,2);el('raw-detail').hidden=false}
+function resetConversation(message='已开启新对话。'){turns=[];save();renderTurns();el('message').textContent=message}
+function scopeIds(){return allDocuments?null:[...selected].sort()}
+function renderDocuments(){el('all-documents').checked=allDocuments;el('documents').replaceChildren();for(const doc of documents){const id=doc.document_id||doc.id;const row=text('div','','doc');const label=document.createElement('label');const checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.checked=allDocuments||selected.has(id);checkbox.disabled=busy;checkbox.dataset.documentId=id;checkbox.setAttribute('aria-label',`查询 ${doc.filename||doc.title||id}`);checkbox.addEventListener('change',()=>{if(allDocuments){allDocuments=false;selected=new Set(documents.map(x=>x.document_id||x.id))}if(checkbox.checked)selected.add(id);else selected.delete(id);resetConversation('文档范围已变化，已开启新对话。');renderDocuments()});label.append(checkbox,text('strong',doc.title||doc.filename||id));row.append(label,text('div',`${doc.chunks??'?'} 个文本块`,'muted'));const actions=text('div','','doc-actions');const link=doc.original_available?originalLink(`/documents/${encodeURIComponent(id)}/file`,'原文件'):null;if(link)actions.append(link);const remove=text('button','删除');remove.type='button';remove.disabled=busy;remove.addEventListener('click',async()=>{if(!confirm('删除此文档、原文件和对应索引？'))return;setBusy(true);try{await api('/documents/'+encodeURIComponent(id),{method:'DELETE'});selected.delete(id);resetConversation('文档已删除，已开启新对话。');await refresh()}catch(error){el('upload-status').textContent=error.message}finally{setBusy(false)}});actions.append(remove);row.append(actions);el('documents').append(row)}if(!documents.length)el('documents').append(text('p','文档库为空，请先上传自己的资料。','muted'));el('scope-status').textContent=allDocuments?`范围：全部 ${documents.length} 份文档`:`范围：已选择 ${selected.size} 份文档${selected.size?'':'，请勾选资料后再查询'}`}
+function setBusy(value){busy=value;for(const selector of ['#ask','#question','#upload','#file','#new-chat','#all-documents','#mode','#language','#top-k','#documents input','#documents button'])for(const node of document.querySelectorAll(selector))node.disabled=value}
+async function refresh(){
+  const health=await api('/health');
+  el('status').textContent=`本地服务已连接 · ${health.provider||'文档问答'}${health.models_loaded?' · 模型已就绪':' · 首次查询加载模型'}${health.ocr_loaded?' · OCR已就绪':''}`;
+  el('status').className='';
+  if(health.ocr_enabled===false)el('ocr-notice').textContent='当前未启用OCR：扫描页和图片无法识别，请检查OCR配置。';
+  else el('ocr-notice').textContent=`扫描页和图片自动用本地OCR识别文字，首次识别稍慢；扫描页默认最多 ${health.ocr_max_pages||30} 页。暂不解读图表含义或识别物体。`;
+  el('provider-notice').hidden=health.provider!=='extractive';
+  el('provider-notice').textContent='当前是原文摘录模式。需要真实生成回答时，请在配置中启用 DeepSeek。';
+  const data=await api('/documents');documents=data.documents||[];
+  const available=new Set(documents.map(x=>x.document_id||x.id));
+  const before=[...selected].sort().join(',');selected=new Set([...selected].filter(id=>available.has(id)));
+  if(!allDocuments&&before!==[...selected].sort().join(','))resetConversation('部分文档已不存在，已清理查询范围并开启新对话。');
+  renderDocuments();save();
+}
+function requestHistory(){const result=[];let remaining=16000;const candidates=turns.filter(turn=>turn.data.status!=='search_only').flatMap(turn=>[{role:'user',content:turn.question},{role:'assistant',content:turn.data.answer||''}]);for(const item of candidates.reverse()){const content=String(item.content).trim().slice(0,Math.min(4000,remaining));if(!content)continue;result.unshift({role:item.role,content});remaining-=content.length;if(result.length===12||remaining===0)break}return result}
+el('all-documents').addEventListener('change',()=>{allDocuments=el('all-documents').checked;selected.clear();resetConversation('文档范围已变化，已开启新对话。');renderDocuments()});
+el('new-chat').addEventListener('click',()=>{resetConversation();el('question').focus()});
+el('upload-form').addEventListener('submit',async event=>{
+  event.preventDefault();if(busy)return;
+  const files=[...el('file').files];if(!files.length)return;
+  setBusy(true);const added=[],failed=[],notices=[];
+  try{
+    for(const [index,file] of files.entries()){
+      el('upload-status').textContent=`正在解析/识别 ${index+1}/${files.length}：${file.name}。图片或扫描PDF首次OCR可能稍慢，请勿重复提交。`;
+      if(file.size>10*1024*1024){failed.push(`${file.name} 超过10MB`);continue;}
+      try{
+        const form=new FormData();form.append('file',file);
+        const result=await api('/documents',{method:'POST',body:form});added.push(result.document_id);
+        if(result.ocr_used)notices.push(`${file.name}：OCR识别 ${Number(result.ocr_pages)||1} 页，请核对原图。`);
+        for(const warning of Array.isArray(result.warnings)?result.warnings:[])if(typeof warning==='string')notices.push(`${file.name}：${warning}`);
+      }catch(error){failed.push(`${file.name}：${error.message}`);}
+    }
+    if(added.length){
+      allDocuments=false;selected=new Set(added);resetConversation('已选择刚上传的文档，可以开始提问。');
+      try{await refresh();}catch(error){failed.push(error.message);}
+    }
+    el('upload-status').textContent=`成功 ${added.length}/${files.length} 份${notices.length?'；'+notices.join('；'):''}${failed.length?'；失败：'+failed.join('；'):''}`;
+    if(!failed.length)el('file').value='';
+  }finally{setBusy(false);}
+});
+el('query-form').addEventListener('submit',async event=>{event.preventDefault();if(busy)return;const question=el('question').value.trim();if(!question)return;if(!documents.length||(!allDocuments&&!selected.size)){el('message').textContent='请先上传并选择至少一份文档。';return}setBusy(true);el('message').className='';el('message').textContent='正在检索和处理，首次查询需要加载本地模型，请勿重复提交…';const agent=el('mode').value==='agent';const payload={question,answer_language:el('language').value,document_ids:scopeIds()};if(agent)payload.max_steps=4;else Object.assign(payload,{top_k:Number(el('top-k').value),generate:el('mode').value!=='search',history:el('mode').value==='answer'?requestHistory():[]});const start=performance.now();try{const data=await api(agent?'/agent':'/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});turns.push({question,data,seconds:(performance.now()-start)/1000});turns=turns.slice(-20);save();renderTurns();el('question').value='';el('message').textContent='查询完成。可以继续追问；换话题请点“新对话”。';refresh().catch(()=>{})}catch(error){el('message').textContent=error.message+' 输入已保留，可以修改后重试。';el('message').className='error'}finally{setBusy(false)}});
+el('question').addEventListener('keydown',event=>{if((event.ctrlKey||event.metaKey)&&event.key==='Enter'){event.preventDefault();el('query-form').requestSubmit()}});
+renderTurns();refresh().catch(error=>{el('status').textContent=error.message;el('status').className='error'});
+</script></body></html>

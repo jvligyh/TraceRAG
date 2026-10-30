@@ -1,0 +1,124 @@
+{
+  "status": "passed",
+  "health_before_query": {
+    "status": "ok",
+    "version": "0.3.0",
+    "features": [
+      "document_scope",
+      "original_files",
+      "conversation_history"
+    ],
+    "documents": 30,
+    "chunks": 231,
+    "provider": "deepseek",
+    "retrieval": "hybrid",
+    "translator": "qwen",
+    "embedding": "minilm",
+    "reranker": "none",
+    "models_loaded": false
+  },
+  "document": {
+    "document_id": "file-60062bcd738bce8a74acd9f5",
+    "filename": "RAG原始论文.pdf",
+    "bytes": 885323,
+    "created_at": "2026-10-29 12:07:42",
+    "pages": 19,
+    "chunks": 115,
+    "original_available": true
+  },
+  "original_sha256_matches": true,
+  "selected_scope_kept": true,
+  "search_response": {
+    "question": "RAG-Token",
+    "answer": "",
+    "status": "search_only",
+    "citations": [],
+    "results": [
+      {
+        "chunk_id": "chunk-888ed7d332c6436b552d",
+        "document_id": "pdf-23e3249e9a1e7541-p0008",
+        "text": "for RAG-Token at 10 retrieved\ndocuments. Figure 3 (right) shows that retrieving more documents leads to higher Rouge-L for\nRAG-Token at the expense of Bleu-1, but the effect is less pronounced for RAG-Sequence.\n10 20 30 40 50\nKR e t r i e v e dD o c s\n39\n40\n41\n42\n43\n44NQ Exact Match RAG-Tok\nRAG-Seq\n10 20 30 40 50\nKR e t r i e v e dD o c s\n40\n50\n60\n70\n80NQ Answer Recall @ K\nRAG-Tok\nRAG-Seq\nFixed DPR\nBM25\n10 20 30 40 50\nKR e t r i e v e dD o c s\n48\n50\n52\n54\n56Bleu-1 / Rouge-L score\nRAG-Tok R-L\nRAG-Tok B-1\nRAG-Seq R-L\nRAG-Seq B-1\nFigure 3: Left: NQ performance as more documents are retrieved. Center: Retrieval recall perfor-\nmance in NQ. Right: MS-MARCO Bleu-1 and Rouge-L as more documents are retrieved.\n5 Related Work",
+        "start_char": 1870,
+        "end_char": 2595,
+        "source": "RAG原始论文.pdf",
+        "page_number": 8,
+        "asset_id": "file-60062bcd738bce8a74acd9f5",
+        "original_available": true,
+        "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=8",
+        "score": 0.03177805800756621,
+        "rank": 1
+      },
+      {
+        "chunk_id": "chunk-db75c5f21566e93e00b0",
+        "document_id": "pdf-23e3249e9a1e7541-p0008",
+        "text": "RAG-Token-BM25 29.7 41.5 32.1 33.1 17.5 22.3 55.5 48.4 75.1 91.6RAG-Sequence-BM25 31.8 44.1 36.6 33.8 11.1 19.5 56.5 46.9\nRAG-Token-Frozen 37.8 50.1 37.1 51.1 16.7 21.7 55.9 49.4 72.9 89.4RAG-Sequence-Frozen 41.2 52.1 41.8 52.6 11.8 19.6 56.7 47.3\nRAG-Token 43.5 54.8 46.5 51.9 17.9 22.6 56.2 49.4 74.5 90.6RAG-Sequence 44.0 55.8 44.9 53.4 15.3 21.5 57.2 47.5\nbetween these dates and use a template “Who is {position}?” (e.g. “Who is the President of Peru?”)\nto query our NQ RAG model with each index. RAG answers 70% correctly using the 2016 index for\n2016 world leaders and 68% using the 2018 index for 2018 world leaders. Accuracy with mismatched\nindices is low (12% with the 2018 index and 2016 leaders, 4% with the 2016 index and 2018 leaders).",
+        "start_char": 572,
+        "end_char": 1321,
+        "source": "RAG原始论文.pdf",
+        "page_number": 8,
+        "asset_id": "file-60062bcd738bce8a74acd9f5",
+        "original_available": true,
+        "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=8",
+        "score": 0.029571646010002173,
+        "rank": 2
+      },
+      {
+        "chunk_id": "chunk-66d28654b4b6651d7c50",
+        "document_id": "pdf-23e3249e9a1e7541-p0003",
+        "text": "and decoding procedure.\n2.1 Models\nRAG-Sequence Model The RAG-Sequence model uses the same retrieved document to generate\nthe complete sequence. Technically, it treats the retrieved document as a single latent variable that\nis marginalized to get the seq2seq probability p(y|x) via a top-K approximation. Concretely, the\ntop K documents are retrieved using the retriever, and the generator produces the output sequence\nprobability for each document, which are then marginalized,\npRAG-Sequence(y|x) ≈\n∑\nz∈top-k(p(·|x))\npη(z|x)pθ(y|x,z ) =\n∑\nz∈top-k(p(·|x))\npη(z|x)\nN∏\ni\npθ(yi|x,z,y 1:i−1)\nRAG-Token Model In the RAG-Token model we can draw a different latent document for each\ntarget token and marginalize accordingly. This allows the generator to choose content from several",
+        "start_char": 673,
+        "end_char": 1447,
+        "source": "RAG原始论文.pdf",
+        "page_number": 3,
+        "asset_id": "file-60062bcd738bce8a74acd9f5",
+        "original_available": true,
+        "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=3",
+        "score": 0.029513888888888888,
+        "rank": 3
+      },
+      {
+        "chunk_id": "chunk-c889d7ac4ae27821815b",
+        "document_id": "pdf-23e3249e9a1e7541-p0003",
+        "text": "byθ that generates a current token based on a context of the previousi− 1 tokensy1:i−1, the original\ninputx and a retrieved passagez.\nTo train the retriever and generator end-to-end, we treat the retrieved document as a latent variable.\nWe propose two models that marginalize over the latent documents in different ways to produce a\ndistribution over generated text. In one approach, RAG-Sequence, the model uses the same document\nto predict each target token. The second approach, RAG-Token, can predict each target token based\non a different document. In the following, we formally introduce both models and then describe the\npη andpθ components, as well as the training and decoding procedure.\n2.1 Models\nRAG-Sequence Model The RAG-Sequence model uses the same retrieved document to generate",
+        "start_char": 0,
+        "end_char": 794,
+        "source": "RAG原始论文.pdf",
+        "page_number": 3,
+        "asset_id": "file-60062bcd738bce8a74acd9f5",
+        "original_available": true,
+        "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=3",
+        "score": 0.02946912242686891,
+        "rank": 4
+      },
+      {
+        "chunk_id": "chunk-99ce456c5d06448f9559",
+        "document_id": "pdf-23e3249e9a1e7541-p0006",
+        "text": "RAG-Token may perform\nbest because it can generate responses that combine content from several documents. Figure 2 shows\nan example. When generating “Sun”, the posterior is high for document 2 which mentions “The\nSun Also Rises”. Similarly, document 1 dominates the posterior when “A Farewell to Arms” is\ngenerated. Intriguingly, after the first token of each book is generated, the document posterior flattens.\nThis observation suggests that the generator can complete the titles without depending on specific\ndocuments. In other words, the model’s parametric knowledge is sufficient to complete the titles. We\nfind evidence for this hypothesis by feeding the BART-only baseline with the partial decoding \"The",
+        "start_char": 2536,
+        "end_char": 3246,
+        "source": "RAG原始论文.pdf",
+        "page_number": 6,
+        "asset_id": "file-60062bcd738bce8a74acd9f5",
+        "original_available": true,
+        "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=6",
+        "score": 0.029437229437229435,
+        "rank": 5
+      }
+    ],
+    "timings": {
+      "index_seconds": 9.22072619991377,
+      "retrieval_seconds": 0.9878910998813808,
+      "rerank_seconds": 5.800044164061546e-06,
+      "rewrite_seconds": 1.600012183189392e-06,
+      "generation_seconds": 2.998858690261841e-07,
+      "total_seconds": 10.209792299894616
+    },
+    "provider": "deepseek",
+    "answer_language": "Chinese",
+    "retrieval_query": "RAG-Token",
+    "history_used": false,
+    "document_ids": [
+      "file-60062bcd738bce8a74acd9f5"
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+// 可选浏览器验收：需要Playwright和本机Edge，不属于Python运行时依赖。
+const {chromium} = require('playwright');
+const fs = require('node:fs');
+const path = require('node:path');
+(async()=>{
+  const root=path.resolve(__dirname,'..');
+  const output=path.join(root,'results','browser');
+  fs.mkdirSync(output,{recursive:true});
+  const browser=await chromium.launch({channel:'msedge',headless:true});
+  const context=await browser.newContext({viewport:{width:1280,height:900},recordVideo:{dir:output,size:{width:1280,height:900}}});
+  const page=await context.newPage();
+  const errors=[];
+  page.on('pageerror',error=>errors.push(error.message));
+  await page.goto('http://127.0.0.1:8000');
+  await page.getByText('本地服务已连接',{exact:false}).waitFor();
+  await page.locator('#question').fill('为什么要分别评估检索和生成？');
+  await page.locator('#mode').selectOption('answer');
+  await page.locator('#ask').click();
+  await page.locator('#message').filter({hasText:'查询完成'}).waitFor({timeout:180000});
+  const data=JSON.parse(await page.locator('#raw').textContent());
+  if(data.status!=='answered'||!data.citations.length)throw new Error('No grounded live answer');
+  await page.screenshot({path:path.join(output,'desktop.png'),fullPage:true});
+  await page.setViewportSize({width:390,height:844});
+  await page.screenshot({path:path.join(output,'mobile.png'),fullPage:true});
+  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);
+  if(overflow||errors.length)throw new Error(JSON.stringify({overflow,errors}));
+  const video=page.video();
+  await context.close();
+  const videoPath=await video.path();
+  await browser.close();
+  console.log(JSON.stringify({status:data.status,citations:data.citations.length,errors,overflow,video:videoPath,output}));
+})().catch(error=>{console.error(error.message);process.exitCode=1});

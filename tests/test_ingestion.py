@@ -59,7 +59,7 @@ class IngestionTests(unittest.TestCase):
 
     def test_parse_path_rejects_unsupported_extension(self) -> None:
         with self.assertRaises(ValueError):
-            parse_path("notes.txt")
+            parse_path("notes.exe")
 
 
 class TextChunkerTests(unittest.TestCase):
@@ -82,6 +82,61 @@ class TextChunkerTests(unittest.TestCase):
         self.assertTrue(all(len(chunk.text) <= 100 for chunk in chunks))
         self.assertTrue(all(chunk.source == "demo.md" for chunk in chunks))
         self.assertTrue(all(chunk.chunk_id.startswith("chunk-") for chunk in chunks))
+
+    def test_chunker_prefers_rightmost_chinese_sentence_boundary(self) -> None:
+        text = ("甲" * 12) + "。" + ("乙" * 3) + "！" + ("丙" * 12)
+        document = Document(document_id="doc-chinese", title="中文切块", text=text)
+
+        chunks = TextChunker(max_chars=20, overlap_chars=0).chunk(document)
+
+        self.assertEqual("！", chunks[0].text[-1])
+        self.assertEqual(text, "".join(chunk.text for chunk in chunks))
+        self.assertTrue(all(len(chunk.text) <= 20 for chunk in chunks))
+
+    def test_chunker_uses_chinese_comma_as_fallback_boundary(self) -> None:
+        text = ("甲" * 12) + "，" + ("乙" * 20)
+        document = Document(document_id="doc-chinese-comma", title="中文逗号", text=text)
+
+        chunks = TextChunker(max_chars=20, overlap_chars=0).chunk(document)
+
+        self.assertEqual("，", chunks[0].text[-1])
+        self.assertEqual(text, "".join(chunk.text for chunk in chunks))
+
+    def test_chunker_hard_cuts_text_without_separator(self) -> None:
+        text = "甲" * 25
+        document = Document(
+            document_id="doc-hard-cut",
+            title="无标点中文",
+            text=text,
+        )
+
+        chunks = TextChunker(
+            max_chars=10,
+            overlap_chars=0,
+        ).chunk(document)
+
+        self.assertEqual(
+            [10, 10, 5],
+            [len(chunk.text) for chunk in chunks],
+        )
+        self.assertEqual(
+            text,
+            "".join(chunk.text for chunk in chunks),
+        )
+
+    def test_overlap_does_not_start_inside_english_word(self) -> None:
+        document = Document(
+            document_id="doc-words",
+            title="Word boundaries",
+            text="retrieval and generation should be evaluated separately because evidence matters",
+        )
+
+        chunks = TextChunker(max_chars=30, overlap_chars=10).chunk(document)
+
+        for chunk in chunks[1:]:
+            previous_character = document.text[chunk.start_char - 1]
+            first_character = document.text[chunk.start_char]
+            self.assertFalse(previous_character.isalnum() and first_character.isalnum())
 
     def test_invalid_chunk_configuration_is_rejected(self) -> None:
         with self.assertRaises(ValueError):

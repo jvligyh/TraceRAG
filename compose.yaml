@@ -1,0 +1,16 @@
+services:
+  tracerag:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      TRACERAG_DEVICE: cpu
+      TRACERAG_DATA_DIR: /app/data/runtime
+    volumes:
+      - tracerag-data:/app/data
+    restart: unless-stopped
+volumes:
+  tracerag-data:

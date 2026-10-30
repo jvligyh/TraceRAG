@@ -7,6 +7,7 @@
 - [x] 统一 Unicode、换行符和过多空行，同时保留代码缩进。
 - [x] 增加带字符区间和来源信息的 `Chunk` 数据结构。
 - [x] 增加段落优先、有重叠的确定性切块器。
+- [x] 支持中文句末标点、分号和逗号边界，并为中文切块补充测试。
 - [x] 使用 SHA-256 生成稳定 document id 和 chunk id。
 - [x] 增加 `day2_ingest.py` 命令行入口。
 - [x] 使用仓库 Markdown 和真实PDF完成冒烟测试。
@@ -22,12 +23,12 @@
 
 ## 你需要亲手完成
 
-- [ ] 解释 `Document` 和 `Chunk` 的区别。
-- [ ] 解释为什么 PDF 按页生成 `Document`。
-- [ ] 逐行阅读 `ingestion.py` 和 `chunking.py`。
-- [ ] 亲手对同一文件运行两次脚本，确认ID一致。
-- [ ] 将 `--max-chars` 从800改为400，先预测再观察 chunk 数量变化。
-- [ ] 亲手增加一项边界测试。
+- [x] 解释 `Document` 和 `Chunk` 的区别。
+- [x] 解释为什么 PDF 按页生成 `Document`。
+- [x] 逐行阅读 `ingestion.py` 和 `chunking.py`。
+- [x] 亲手对同一文件运行两次脚本，确认ID一致。
+- [x] 将 `--max-chars` 从800改为400，先预测再观察 chunk 数量变化。
+- [x] 亲手增加一项边界测试。
 - [ ] 用自己的话说清 Transformer 中 token、embedding、attention 和输出向量的数据流。
 
 ## 亲手运行

@@ -1,0 +1,54 @@
+{
+  "recorded_at": "2026-10-29T12:27:53.014347+00:00",
+  "python": "3.12.14",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "packages": {
+    "tracerag": "0.4.0",
+    "fastembed": "0.8.0",
+    "jieba": "0.42.1",
+    "openai": "2.54.0",
+    "pypdf": "6.18.1",
+    "fastapi": "0.162.0",
+    "starlette": "1.10.0",
+    "uvicorn": "0.54.0",
+    "python-multipart": "0.0.32",
+    "httpx": "0.28.1",
+    "torch": "2.14.0+cu130",
+    "transformers": "4.57.6",
+    "onnxruntime": "1.30.0",
+    "huggingface-hub": "0.36.2",
+    "rapidocr": "3.10.0",
+    "pypdfium2": "5.14.0",
+    "Pillow": "12.3.0",
+    "opencv-python-headless": "5.0.0.93"
+  },
+  "cuda": {
+    "available": true,
+    "build": "13.0",
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU"
+  },
+  "ocr": {
+    "engine": "RapidOCR",
+    "version": "3.10.0",
+    "model_family": "PP-OCRv6-small",
+    "device": "cpu",
+    "min_confidence": 0.5,
+    "models": [
+      {
+        "file": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+        "bytes": 585532,
+        "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+      },
+      {
+        "file": "PP-OCRv6_det_small.onnx",
+        "bytes": 9929594,
+        "sha256": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f"
+      },
+      {
+        "file": "PP-OCRv6_rec_small.onnx",
+        "bytes": 21234383,
+        "sha256": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884"
+      }
+    ]
+  }
+}

@@ -1,0 +1,383 @@
+{
+  "source_url": "https://arxiv.org/pdf/2005.11401v4",
+  "sha256": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+  "pdf_pages": 19,
+  "responses": [
+    {
+      "question": "这篇论文提出的 RAG-Sequence 和 RAG-Token 有什么区别？",
+      "answer": "RAG-Sequence 对整条输出序列使用同一个检索文档：它把检索文档视为单一潜在变量，用 top-K 文档分别计算输出序列概率后再边缘化。RAG-Token 则可为每个目标 token 抽取不同的潜在文档并相应边缘化，使生成器能够从多个文档中选择内容。",
+      "status": "answered",
+      "citations": [
+        {
+          "chunk_id": "chunk-66d28654b4b6651d7c50",
+          "document_id": "pdf-23e3249e9a1e7541-p0003",
+          "text": "and decoding procedure.\n2.1 Models\nRAG-Sequence Model The RAG-Sequence model uses the same retrieved document to generate\nthe complete sequence. Technically, it treats the retrieved document as a single latent variable that\nis marginalized to get the seq2seq probability p(y|x) via a top-K approximation. Concretely, the\ntop K documents are retrieved using the retriever, and the generator produces the output sequence\nprobability for each document, which are then marginalized,\npRAG-Sequence(y|x) ≈\n∑\nz∈top-k(p(·|x))\npη(z|x)pθ(y|x,z ) =\n∑\nz∈top-k(p(·|x))\npη(z|x)\nN∏\ni\npθ(yi|x,z,y 1:i−1)\nRAG-Token Model In the RAG-Token model we can draw a different latent document for each\ntarget token and marginalize accordingly. This allows the generator to choose content from several",
+          "start_char": 673,
+          "end_char": 1447,
+          "source": "RAG原始论文.pdf",
+          "page_number": 3,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=3",
+          "score": 0.031754032258064516,
+          "rank": 1
+        },
+        {
+          "chunk_id": "chunk-c889d7ac4ae27821815b",
+          "document_id": "pdf-23e3249e9a1e7541-p0003",
+          "text": "byθ that generates a current token based on a context of the previousi− 1 tokensy1:i−1, the original\ninputx and a retrieved passagez.\nTo train the retriever and generator end-to-end, we treat the retrieved document as a latent variable.\nWe propose two models that marginalize over the latent documents in different ways to produce a\ndistribution over generated text. In one approach, RAG-Sequence, the model uses the same document\nto predict each target token. The second approach, RAG-Token, can predict each target token based\non a different document. In the following, we formally introduce both models and then describe the\npη andpθ components, as well as the training and decoding procedure.\n2.1 Models\nRAG-Sequence Model The RAG-Sequence model uses the same retrieved document to generate",
+          "start_char": 0,
+          "end_char": 794,
+          "source": "RAG原始论文.pdf",
+          "page_number": 3,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=3",
+          "score": 0.030798389007344232,
+          "rank": 3
+        },
+        {
+          "chunk_id": "chunk-99ce456c5d06448f9559",
+          "document_id": "pdf-23e3249e9a1e7541-p0006",
+          "text": "RAG-Token may perform\nbest because it can generate responses that combine content from several documents. Figure 2 shows\nan example. When generating “Sun”, the posterior is high for document 2 which mentions “The\nSun Also Rises”. Similarly, document 1 dominates the posterior when “A Farewell to Arms” is\ngenerated. Intriguingly, after the first token of each book is generated, the document posterior flattens.\nThis observation suggests that the generator can complete the titles without depending on specific\ndocuments. In other words, the model’s parametric knowledge is sufficient to complete the titles. We\nfind evidence for this hypothesis by feeding the BART-only baseline with the partial decoding \"The",
+          "start_char": 2536,
+          "end_char": 3246,
+          "source": "RAG原始论文.pdf",
+          "page_number": 6,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=6",
+          "score": 0.029551337359792925,
+          "rank": 4
+        }
+      ],
+      "results": [
+        {
+          "chunk_id": "chunk-66d28654b4b6651d7c50",
+          "document_id": "pdf-23e3249e9a1e7541-p0003",
+          "text": "and decoding procedure.\n2.1 Models\nRAG-Sequence Model The RAG-Sequence model uses the same retrieved document to generate\nthe complete sequence. Technically, it treats the retrieved document as a single latent variable that\nis marginalized to get the seq2seq probability p(y|x) via a top-K approximation. Concretely, the\ntop K documents are retrieved using the retriever, and the generator produces the output sequence\nprobability for each document, which are then marginalized,\npRAG-Sequence(y|x) ≈\n∑\nz∈top-k(p(·|x))\npη(z|x)pθ(y|x,z ) =\n∑\nz∈top-k(p(·|x))\npη(z|x)\nN∏\ni\npθ(yi|x,z,y 1:i−1)\nRAG-Token Model In the RAG-Token model we can draw a different latent document for each\ntarget token and marginalize accordingly. This allows the generator to choose content from several",
+          "start_char": 673,
+          "end_char": 1447,
+          "source": "RAG原始论文.pdf",
+          "page_number": 3,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=3",
+          "score": 0.031754032258064516,
+          "rank": 1
+        },
+        {
+          "chunk_id": "chunk-888ed7d332c6436b552d",
+          "document_id": "pdf-23e3249e9a1e7541-p0008",
+          "text": "for RAG-Token at 10 retrieved\ndocuments. Figure 3 (right) shows that retrieving more documents leads to higher Rouge-L for\nRAG-Token at the expense of Bleu-1, but the effect is less pronounced for RAG-Sequence.\n10 20 30 40 50\nKR e t r i e v e dD o c s\n39\n40\n41\n42\n43\n44NQ Exact Match RAG-Tok\nRAG-Seq\n10 20 30 40 50\nKR e t r i e v e dD o c s\n40\n50\n60\n70\n80NQ Answer Recall @ K\nRAG-Tok\nRAG-Seq\nFixed DPR\nBM25\n10 20 30 40 50\nKR e t r i e v e dD o c s\n48\n50\n52\n54\n56Bleu-1 / Rouge-L score\nRAG-Tok R-L\nRAG-Tok B-1\nRAG-Seq R-L\nRAG-Seq B-1\nFigure 3: Left: NQ performance as more documents are retrieved. Center: Retrieval recall perfor-\nmance in NQ. Right: MS-MARCO Bleu-1 and Rouge-L as more documents are retrieved.\n5 Related Work",
+          "start_char": 1870,
+          "end_char": 2595,
+          "source": "RAG原始论文.pdf",
+          "page_number": 8,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=8",
+          "score": 0.0315136476426799,
+          "rank": 2
+        },
+        {
+          "chunk_id": "chunk-c889d7ac4ae27821815b",
+          "document_id": "pdf-23e3249e9a1e7541-p0003",
+          "text": "byθ that generates a current token based on a context of the previousi− 1 tokensy1:i−1, the original\ninputx and a retrieved passagez.\nTo train the retriever and generator end-to-end, we treat the retrieved document as a latent variable.\nWe propose two models that marginalize over the latent documents in different ways to produce a\ndistribution over generated text. In one approach, RAG-Sequence, the model uses the same document\nto predict each target token. The second approach, RAG-Token, can predict each target token based\non a different document. In the following, we formally introduce both models and then describe the\npη andpθ components, as well as the training and decoding procedure.\n2.1 Models\nRAG-Sequence Model The RAG-Sequence model uses the same retrieved document to generate",
+          "start_char": 0,
+          "end_char": 794,
+          "source": "RAG原始论文.pdf",
+          "page_number": 3,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=3",
+          "score": 0.030798389007344232,
+          "rank": 3
+        },
+        {
+          "chunk_id": "chunk-99ce456c5d06448f9559",
+          "document_id": "pdf-23e3249e9a1e7541-p0006",
+          "text": "RAG-Token may perform\nbest because it can generate responses that combine content from several documents. Figure 2 shows\nan example. When generating “Sun”, the posterior is high for document 2 which mentions “The\nSun Also Rises”. Similarly, document 1 dominates the posterior when “A Farewell to Arms” is\ngenerated. Intriguingly, after the first token of each book is generated, the document posterior flattens.\nThis observation suggests that the generator can complete the titles without depending on specific\ndocuments. In other words, the model’s parametric knowledge is sufficient to complete the titles. We\nfind evidence for this hypothesis by feeding the BART-only baseline with the partial decoding \"The",
+          "start_char": 2536,
+          "end_char": 3246,
+          "source": "RAG原始论文.pdf",
+          "page_number": 6,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=6",
+          "score": 0.029551337359792925,
+          "rank": 4
+        },
+        {
+          "chunk_id": "chunk-6643ab664b09e977c9ac",
+          "document_id": "pdf-23e3249e9a1e7541-p0006",
+          "text": "Jeopardy question generation,\nwith both models outperforming BART on Q-BLEU-1. 4 shows human evaluation results, over 452\npairs of generations from BART and RAG-Token. Evaluators indicated that BART was more factual\nthan RAG in only 7.1% of cases, while RAG was more factual in 42.7% of cases, and both RAG and\nBART were factual in a further 17% of cases, clearly demonstrating the effectiveness of RAG on\nthe task over a state-of-the-art generation model. Evaluators also find RAG generations to be more\nspecific by a large margin. Table 3 shows typical generations from each model.\nJeopardy questions often contain two separate pieces of information, and RAG-Token may perform\nbest because it can generate responses that combine content from several documents. Figure 2 shows",
+          "start_char": 1879,
+          "end_char": 2656,
+          "source": "RAG原始论文.pdf",
+          "page_number": 6,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=6",
+          "score": 0.02877846790890269,
+          "rank": 5
+        }
+      ],
+      "timings": {
+        "index_seconds": 35.36295869993046,
+        "retrieval_seconds": 2.33361479989253,
+        "rerank_seconds": 0.0001830998808145523,
+        "rewrite_seconds": 1.4998950064182281e-06,
+        "generation_seconds": 2.6236497999634594,
+        "total_seconds": 40.32204640004784
+      },
+      "provider": "deepseek",
+      "answer_language": "Chinese",
+      "retrieval_query": "这篇论文提出的 RAG-Sequence 和 RAG-Token 有什么区别？",
+      "history_used": false,
+      "document_ids": [
+        "file-60062bcd738bce8a74acd9f5"
+      ]
+    },
+    {
+      "question": "其中后者可以在每个输出 token 使用不同的文档吗？",
+      "answer": "可以。RAG-Token 能够为每个目标 token 抽取不同的潜在文档并相应边缘化，从而使生成器在生成答案时从多个文档中选择内容。",
+      "status": "answered",
+      "citations": [
+        {
+          "chunk_id": "chunk-c889d7ac4ae27821815b",
+          "document_id": "pdf-23e3249e9a1e7541-p0003",
+          "text": "byθ that generates a current token based on a context of the previousi− 1 tokensy1:i−1, the original\ninputx and a retrieved passagez.\nTo train the retriever and generator end-to-end, we treat the retrieved document as a latent variable.\nWe propose two models that marginalize over the latent documents in different ways to produce a\ndistribution over generated text. In one approach, RAG-Sequence, the model uses the same document\nto predict each target token. The second approach, RAG-Token, can predict each target token based\non a different document. In the following, we formally introduce both models and then describe the\npη andpθ components, as well as the training and decoding procedure.\n2.1 Models\nRAG-Sequence Model The RAG-Sequence model uses the same retrieved document to generate",
+          "start_char": 0,
+          "end_char": 794,
+          "source": "RAG原始论文.pdf",
+          "page_number": 3,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=3",
+          "score": 0.03278688524590164,
+          "rank": 1
+        },
+        {
+          "chunk_id": "chunk-ddf9181e1f140ec7198a",
+          "document_id": "pdf-23e3249e9a1e7541-p0003",
+          "text": "latent document for each\ntarget token and marginalize accordingly. This allows the generator to choose content from several\ndocuments when producing an answer. Concretely, the top K documents are retrieved using the\nretriever, and then the generator produces a distribution for the next output token for each document,\nbefore marginalizing, and repeating the process with the following output token, Formally, we define:\npRAG-Token(y|x) ≈\nN∏\ni\n∑\nz∈top-k(p(·|x))\npη(z|x)pθ(yi|x,z,y 1:i−1)\nFinally, we note that RAG can be used for sequence classification tasks by considering the target class\nas a target sequence of length one, in which case RAG-Sequence and RAG-Token are equivalent.\n2.2 Retriever: DPR\nThe retrieval componentpη(z|x) is based on DPR [26]. DPR follows a bi-encoder architecture:",
+          "start_char": 1324,
+          "end_char": 2119,
+          "source": "RAG原始论文.pdf",
+          "page_number": 3,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=3",
+          "score": 0.030834914611005692,
+          "rank": 3
+        },
+        {
+          "chunk_id": "chunk-66d28654b4b6651d7c50",
+          "document_id": "pdf-23e3249e9a1e7541-p0003",
+          "text": "and decoding procedure.\n2.1 Models\nRAG-Sequence Model The RAG-Sequence model uses the same retrieved document to generate\nthe complete sequence. Technically, it treats the retrieved document as a single latent variable that\nis marginalized to get the seq2seq probability p(y|x) via a top-K approximation. Concretely, the\ntop K documents are retrieved using the retriever, and the generator produces the output sequence\nprobability for each document, which are then marginalized,\npRAG-Sequence(y|x) ≈\n∑\nz∈top-k(p(·|x))\npη(z|x)pθ(y|x,z ) =\n∑\nz∈top-k(p(·|x))\npη(z|x)\nN∏\ni\npθ(yi|x,z,y 1:i−1)\nRAG-Token Model In the RAG-Token model we can draw a different latent document for each\ntarget token and marginalize accordingly. This allows the generator to choose content from several",
+          "start_char": 673,
+          "end_char": 1447,
+          "source": "RAG原始论文.pdf",
+          "page_number": 3,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=3",
+          "score": 0.02976190476190476,
+          "rank": 5
+        }
+      ],
+      "results": [
+        {
+          "chunk_id": "chunk-c889d7ac4ae27821815b",
+          "document_id": "pdf-23e3249e9a1e7541-p0003",
+          "text": "byθ that generates a current token based on a context of the previousi− 1 tokensy1:i−1, the original\ninputx and a retrieved passagez.\nTo train the retriever and generator end-to-end, we treat the retrieved document as a latent variable.\nWe propose two models that marginalize over the latent documents in different ways to produce a\ndistribution over generated text. In one approach, RAG-Sequence, the model uses the same document\nto predict each target token. The second approach, RAG-Token, can predict each target token based\non a different document. In the following, we formally introduce both models and then describe the\npη andpθ components, as well as the training and decoding procedure.\n2.1 Models\nRAG-Sequence Model The RAG-Sequence model uses the same retrieved document to generate",
+          "start_char": 0,
+          "end_char": 794,
+          "source": "RAG原始论文.pdf",
+          "page_number": 3,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=3",
+          "score": 0.03278688524590164,
+          "rank": 1
+        },
+        {
+          "chunk_id": "chunk-255a4960ccc73f045ef7",
+          "document_id": "pdf-23e3249e9a1e7541-p0002",
+          "text": "documents together with\nthe input to generate the output. We marginalize the latent documents with a top-K approximation,\neither on a per-output basis (assuming the same document is responsible for all tokens) or a per-token\nbasis (where different documents are responsible for different tokens). Like T5 [51] or BART, RAG\ncan be fine-tuned on any seq2seq task, whereby both the generator and retriever are jointly learned.\nThere has been extensive previous work proposing architectures to enrich systems with non-parametric\nmemory which are trained from scratch for specific tasks, e.g. memory networks [ 64, 55], stack-\naugmented networks [25] and memory layers [ 30]. In contrast, we explore a setting where both",
+          "start_char": 1871,
+          "end_char": 2586,
+          "source": "RAG原始论文.pdf",
+          "page_number": 2,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=2",
+          "score": 0.0315136476426799,
+          "rank": 2
+        },
+        {
+          "chunk_id": "chunk-ddf9181e1f140ec7198a",
+          "document_id": "pdf-23e3249e9a1e7541-p0003",
+          "text": "latent document for each\ntarget token and marginalize accordingly. This allows the generator to choose content from several\ndocuments when producing an answer. Concretely, the top K documents are retrieved using the\nretriever, and then the generator produces a distribution for the next output token for each document,\nbefore marginalizing, and repeating the process with the following output token, Formally, we define:\npRAG-Token(y|x) ≈\nN∏\ni\n∑\nz∈top-k(p(·|x))\npη(z|x)pθ(yi|x,z,y 1:i−1)\nFinally, we note that RAG can be used for sequence classification tasks by considering the target class\nas a target sequence of length one, in which case RAG-Sequence and RAG-Token are equivalent.\n2.2 Retriever: DPR\nThe retrieval componentpη(z|x) is based on DPR [26]. DPR follows a bi-encoder architecture:",
+          "start_char": 1324,
+          "end_char": 2119,
+          "source": "RAG原始论文.pdf",
+          "page_number": 3,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=3",
+          "score": 0.030834914611005692,
+          "rank": 3
+        },
+        {
+          "chunk_id": "chunk-99ce456c5d06448f9559",
+          "document_id": "pdf-23e3249e9a1e7541-p0006",
+          "text": "RAG-Token may perform\nbest because it can generate responses that combine content from several documents. Figure 2 shows\nan example. When generating “Sun”, the posterior is high for document 2 which mentions “The\nSun Also Rises”. Similarly, document 1 dominates the posterior when “A Farewell to Arms” is\ngenerated. Intriguingly, after the first token of each book is generated, the document posterior flattens.\nThis observation suggests that the generator can complete the titles without depending on specific\ndocuments. In other words, the model’s parametric knowledge is sufficient to complete the titles. We\nfind evidence for this hypothesis by feeding the BART-only baseline with the partial decoding \"The",
+          "start_char": 2536,
+          "end_char": 3246,
+          "source": "RAG原始论文.pdf",
+          "page_number": 6,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=6",
+          "score": 0.030117753623188408,
+          "rank": 4
+        },
+        {
+          "chunk_id": "chunk-66d28654b4b6651d7c50",
+          "document_id": "pdf-23e3249e9a1e7541-p0003",
+          "text": "and decoding procedure.\n2.1 Models\nRAG-Sequence Model The RAG-Sequence model uses the same retrieved document to generate\nthe complete sequence. Technically, it treats the retrieved document as a single latent variable that\nis marginalized to get the seq2seq probability p(y|x) via a top-K approximation. Concretely, the\ntop K documents are retrieved using the retriever, and the generator produces the output sequence\nprobability for each document, which are then marginalized,\npRAG-Sequence(y|x) ≈\n∑\nz∈top-k(p(·|x))\npη(z|x)pθ(y|x,z ) =\n∑\nz∈top-k(p(·|x))\npη(z|x)\nN∏\ni\npθ(yi|x,z,y 1:i−1)\nRAG-Token Model In the RAG-Token model we can draw a different latent document for each\ntarget token and marginalize accordingly. This allows the generator to choose content from several",
+          "start_char": 673,
+          "end_char": 1447,
+          "source": "RAG原始论文.pdf",
+          "page_number": 3,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=3",
+          "score": 0.02976190476190476,
+          "rank": 5
+        }
+      ],
+      "timings": {
+        "index_seconds": 0.0,
+        "retrieval_seconds": 0.7413208000361919,
+        "rerank_seconds": 7.300172001123428e-06,
+        "rewrite_seconds": 0.7550442998763174,
+        "generation_seconds": 1.0799100999720395,
+        "total_seconds": 2.58924450003542
+      },
+      "provider": "deepseek",
+      "answer_language": "Chinese",
+      "retrieval_query": "RAG-Token 可以在每个输出 token 使用不同的文档吗？",
+      "history_used": true,
+      "document_ids": [
+        "file-60062bcd738bce8a74acd9f5"
+      ]
+    },
+    {
+      "question": "请给出论文实验训练耗电量的确切数值，单位 kWh。",
+      "answer": "提供的资料未包含论文实验训练耗电量的确切数值（kWh）。",
+      "status": "insufficient_evidence",
+      "citations": [],
+      "results": [
+        {
+          "chunk_id": "chunk-6af26df89d4d165366cd",
+          "document_id": "pdf-23e3249e9a1e7541-p0003",
+          "text": "functions. It has obtained\nstate-of-the-art results on a diverse set of generation tasks and outperforms comparably-sized T5\nmodels [32]. We refer to the BART generator parametersθ as the parametric memory henceforth.\n2.4 Training\nWe jointly train the retriever and generator components without any direct supervision on what\ndocument should be retrieved. Given a fine-tuning training corpus of input/output pairs (xj,yj), we\n3",
+          "start_char": 3232,
+          "end_char": 3659,
+          "source": "RAG原始论文.pdf",
+          "page_number": 3,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=3",
+          "score": 0.01639344262295082,
+          "rank": 1
+        },
+        {
+          "chunk_id": "chunk-7437da757237eb437dbd",
+          "document_id": "pdf-23e3249e9a1e7541-p0004",
+          "text": "minimize the negative marginal log-likelihood of each target,∑\nj− logp(yj|xj) using stochastic\ngradient descent with Adam [28]. Updating the document encoder BERTd during training is costly as\nit requires the document index to be periodically updated as REALM does during pre-training [20].\nWe do not find this step necessary for strong performance, and keep the document encoder (and\nindex) fixed, only fine-tuning the query encoder BERTq and the BART generator.\n2.5 Decoding\nAt test time, RAG-Sequence and RAG-Token require different ways to approximatearg maxyp(y|x).\nRAG-Token The RAG-Token model can be seen as a standard, autoregressive seq2seq genera-\ntor with transition probability: p′\nθ(yi|x,y 1:i−1) = ∑\nz∈top-k(p(·|x))pη(zi|x)pθ(yi|x,zi,y 1:i−1) To\ndecode, we can plugp′",
+          "start_char": 0,
+          "end_char": 782,
+          "source": "RAG原始论文.pdf",
+          "page_number": 4,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=4",
+          "score": 0.016129032258064516,
+          "rank": 2
+        },
+        {
+          "chunk_id": "chunk-8e7648f546aeb7f641fa",
+          "document_id": "pdf-23e3249e9a1e7541-p0009",
+          "text": "if the two components\ncan be jointly pre-trained from scratch, either with a denoising objective similar to BART or some\nanother objective. Our work opens up new research directions on how parametric and non-parametric\nmemories interact and how to most effectively combine them, showing promise in being applied to a\nwide variety of NLP tasks.\n9",
+          "start_char": 3788,
+          "end_char": 4133,
+          "source": "RAG原始论文.pdf",
+          "page_number": 9,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=9",
+          "score": 0.015873015873015872,
+          "rank": 3
+        },
+        {
+          "chunk_id": "chunk-68446c7137f49f3621b2",
+          "document_id": "pdf-23e3249e9a1e7541-p0017",
+          "text": "gold sentences in order to\nassess the accuracy of the annotators. Two annotators did not perform well on these examples and\ntheir annotations were removed from the results.\nC Training setup Details\nWe train all RAG models and BART baselines using Fairseq [45].2 We train with mixed precision\nfloating point arithmetic [ 40], distributing training across 8, 32GB NVIDIA V100 GPUs, though\ntraining and inference can be run on one GPU. We find that doing Maximum Inner Product Search\nwith FAISS is sufficiently fast on CPU, so we store document index vectors on CPU, requiring∼ 100\nGB of CPU memory for all of Wikipedia. After submission, We have ported our code to HuggingFace\nTransformers [66]3, which achieves equivalent performance to the previous version but is a cleaner",
+          "start_char": 1310,
+          "end_char": 2083,
+          "source": "RAG原始论文.pdf",
+          "page_number": 17,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=17",
+          "score": 0.015625,
+          "rank": 4
+        },
+        {
+          "chunk_id": "chunk-40347ca027c18804a1c4",
+          "document_id": "pdf-23e3249e9a1e7541-p0018",
+          "text": "finally marginalizing across\ndocuments to obtain the class probabilities. The FEVER task traditionally has two sub-tasks. The\nfirst is to classify the claim as either \"Supported\", \"Refuted\" or \"Not Enough Info\", which is the task\nwe explore in the main paper. FEVER’s other sub-task involves extracting sentences from Wikipedia\nas evidence supporting the classification prediction. As FEVER uses a different Wikipedia dump to\nus, directly tackling this task is not straightforward. We hope to address this in future work.\nF Null Document Probabilities\nWe experimented with adding \"Null document\" mechanism to RAG, similar to REALM [20] in order\nto model cases where no useful information could be retrieved for a given input. Here, ifk documents",
+          "start_char": 2484,
+          "end_char": 3229,
+          "source": "RAG原始论文.pdf",
+          "page_number": 18,
+          "asset_id": "file-60062bcd738bce8a74acd9f5",
+          "original_available": true,
+          "source_url": "/documents/file-60062bcd738bce8a74acd9f5/file#page=18",
+          "score": 0.015384615384615385,
+          "rank": 5
+        }
+      ],
+      "timings": {
+        "index_seconds": 0.0,
+        "retrieval_seconds": 0.14275059988722205,
+        "rerank_seconds": 5.800044164061546e-06,
+        "rewrite_seconds": 1.0204564000014216,
+        "generation_seconds": 0.9639709999319166,
+        "total_seconds": 2.1316215000115335
+      },
+      "provider": "deepseek",
+      "answer_language": "Chinese",
+      "retrieval_query": "请给出论文实验训练耗电量的确切数值，单位 kWh。",
+      "history_used": true,
+      "document_ids": [
+        "file-60062bcd738bce8a74acd9f5"
+      ]
+    }
+  ],
+  "upload": {
+    "document_id": "file-60062bcd738bce8a74acd9f5",
+    "filename": "RAG原始论文.pdf",
+    "bytes": 885323,
+    "created_at": "2026-10-29 12:07:42",
+    "pages": 19,
+    "chunks": 115,
+    "original_available": true,
+    "duplicate": false
+  },
+  "empty_scope_keeps_empty": true
+}
