@@ -12,7 +12,7 @@
 
 完整配置和命令见 [快速开始](docs/quickstart.md)，故障排查见 [运行指南](docs/runbook.md)，真实评测见 [评测说明](docs/evaluation.md)，交付范围见 [完成记录](docs/completion.md)。下方保留Day1～Day5教学脚本用法。
 
-TraceRAG 是一个面向技术文档的「可追溯、评测优先」RAG 与工具调用服务。项目目标是准备华为 AI 应用工程师实习岗，而不是再做一个只能演示的 PDF 聊天机器人。
+TraceRAG 是一个面向技术文档的「可追溯、评测优先」RAG 与工具调用服务。
 
 ## 当前状态
 
